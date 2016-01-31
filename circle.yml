@@ -1,0 +1,13 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker build -t dakue/tmux-static .
+
+test:
+  override:
+    - mkdir -p target
+    - docker run -it -v $(pwd)/target:/target dakue/tmux-static
+    - test -f target/tmux && cp target/tmux-static $CIRCLE_ARTIFACTS
