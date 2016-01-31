@@ -10,12 +10,14 @@ then
     then
         echo "INFO: Installing tmux to /target"
         cp /tmp/tmux/tempinstall/bin/tmux /target
+        echo "INFO: Copying logs to /target"
+        cp /tmp/*.log /target
     else
         echo "/target is not a mountpoint."
         echo "You can either:"
         echo "- re-run this container with -v /opt/tmux/bin:/target"
         echo "- extract the tmux binary (located at /tmp/tmux/tempinstall/bin)"
     fi
+else
+    exec "$@"
 fi
-
-exec "$@"
