@@ -11,4 +11,4 @@ test:
     - mkdir -p target
     - docker run -it -v $(pwd)/target:/target dakue/tmux-static
     - test -f target/tmux.log && cp target/*.log $CIRCLE_ARTIFACTS
-    - test -f target/tmux && cp target/tmux-static $CIRCLE_ARTIFACTS
+    - test -f target/tmux && cp target/tmux $CIRCLE_ARTIFACTS/tmux-static
