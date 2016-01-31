@@ -1,9 +1,9 @@
 FROM debian:jessie
 
-ENV MUSL_VERSION="1.1.11" \
+ENV MUSL_VERSION="1.1.12" \
   NCURSES_VERSION="6.0" \
   LIBEVENT_VERSION="2.0.22" \
-  TMUX_VERSION="2.0"
+  TMUX_VERSION="2.1"
 
 RUN set -x && \
   apt-get update && \
