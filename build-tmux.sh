@@ -21,7 +21,7 @@ for i in "$MUSLPKG" "$NCRSPKG" "$LEVTPKG" "$TMUXPKG"; do
     URL=${i#*:}
     [[ -d "$TEMPDIR/$NAME" ]] && rm -rf "$TEMPDIR/$NAME"
     [[ -d "$TEMPDIR/$NAME" ]] || mkdir  "$TEMPDIR/$NAME" || { echo "FATAL: Could not create $TEMPDIR/$NAME."; exit 1; }
-    [[ -f "$CURRABSPATH/$TGZ" ]] || curl -L -o "$CURRABSPATH/$TGZ" "$URL" || wget -O "$CURRABSPATH/$TGZ" "$URL" || { echo "FATAL: failed to fetch $URL."; exit 1; }
+    [[ -f "$CURRABSPATH/$TGZ" ]] || curl -sSL -o "$CURRABSPATH/$TGZ" "$URL" || wget -O "$CURRABSPATH/$TGZ" "$URL" || { echo "FATAL: failed to fetch $URL."; exit 1; }
     echo "Unpacking $NAME" && tar --strip-components=1 -C "$TEMPDIR/$NAME" -xf "$TGZ" && mkdir "$TEMPDIR/$NAME/tempinstall" \
         || { echo "FATAL: Could not unpack one of the required source packages. Check above output for clues."; exit 1; }
     echo "Building $NAME (this may take some time)"
@@ -31,9 +31,9 @@ for i in "$MUSLPKG" "$NCRSPKG" "$LEVTPKG" "$TMUXPKG"; do
         musl )
             (cd "$TEMPDIR/$NAME" && ./configure --enable-gcc-wrapper --prefix="$PREFIX") && \
                 make -C "$TEMPDIR/$NAME" && make -C "$TEMPDIR/$NAME" install
-            curl -L -o "$TEMPDIR/$NAME/tempinstall/include/sys/queue.h" "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-queue.h?id=e3725c0af137717d6883265a92db3838900b5cee"
-            curl -L -o "$TEMPDIR/$NAME/tempinstall/include/sys/cdefs.h" "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-cdefs.h?id=e3725c0af137717d6883265a92db3838900b5cee"
-            curl -L -o "$TEMPDIR/$NAME/tempinstall/include/sys/tree.h" "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-tree.h?id=e3725c0af137717d6883265a92db3838900b5cee"
+            curl -sSL -o "$TEMPDIR/$NAME/tempinstall/include/sys/queue.h" "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-queue.h?id=e3725c0af137717d6883265a92db3838900b5cee"
+            curl -sSL -o "$TEMPDIR/$NAME/tempinstall/include/sys/cdefs.h" "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-cdefs.h?id=e3725c0af137717d6883265a92db3838900b5cee"
+            curl -sSL -o "$TEMPDIR/$NAME/tempinstall/include/sys/tree.h" "http://git.alpinelinux.org/cgit/aports/plain/main/libc-dev/sys-tree.h?id=e3725c0af137717d6883265a92db3838900b5cee"
             ;;
         ncurses )
             (cd "$TEMPDIR/$NAME" && ./configure --without-ada --without-cxx --without-progs --without-manpages --disable-db-install --without-tests --with-default-terminfo-dir=/usr/share/terminfo --with-terminfo-dirs="/etc/terminfo:/lib/terminfo:/usr/share/terminfo" --prefix="$PREFIX" CC="$MUSLCC") && \
